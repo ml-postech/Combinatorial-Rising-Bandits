@@ -54,12 +54,14 @@ if __name__ == '__main__':
                 print(algo)
                 
                 env.reset()
-                if '_' in algo:
+                if algo not in ('CRUCB', 'RUCB', 'SW_CTS', 'SW_TS', 'SW_UCB', 'SW_CUCB'):
                     line = algo.split('_')
+                    if len(line) != 2 or line[0] != 'CRUCB':
+                        raise ValueError(f"Unsupported algorithm: {algo}")
                     epsilon = float(line[1])
                     print(epsilon)
                     algor = line[0]
-                    runner = globals()[algor](args.T, env, epsilon)
+                    runner = globals()[algor](args.T, env, task, epsilon=epsilon)
                     # cumulative_rewards, _ = runner.run()
                     cumulative_rewards, selected_arms = runner.run()
                     
